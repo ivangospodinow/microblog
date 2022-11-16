@@ -5,7 +5,7 @@ namespace App\Factory;
 use PDO;
 use Slim\Container;
 
-class PdoFactory
+class PdoFactory extends AbstractFactory
 {
     public function __invoke(Container $config)
     {
