@@ -13,6 +13,18 @@
 [ ] Recheck each point
 [ ] Reliase
 
+# commands
+``
+First time app run
+composer run-script appinit
+
+App reset - drops the database, removes .env and related files
+composer run-script appreset
+
+Starts app localhost
+composer run-script localhost
+``
+
 # Microblog Task
 
 # Project requirements
