@@ -23,6 +23,9 @@ composer run-script appreset
 
 Starts app localhost
 composer run-script localhost
+
+Runs app tests
+composer run-script tests
 ``
 
 # Microblog Task

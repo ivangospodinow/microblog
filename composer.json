@@ -24,7 +24,8 @@
             "@composer install",
             "@php scripts/appreset.php"
         ],
-        "localhost": "php -S localhost:8888 -t public public/index.php"
+        "localhost": "php -S localhost:8888 -t public public/index.php",
+        "tests": "phpunit tests"
     },
     "config": {
         "process-timeout": 3600
