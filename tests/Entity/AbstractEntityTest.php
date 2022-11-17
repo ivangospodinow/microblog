@@ -45,4 +45,20 @@ final class AbstractEntityTest extends AbstractTextCase
         $this->assertSame(['id' => 1], $this->mock->getArrayCopy());
     }
 
+    public function testGetIdNull(): void
+    {
+        $this->assertNull($this->mock->getId());
+    }
+
+    public function testGetIdSet(): void
+    {
+        $this->mock = $this->getMockForAbstractClass(AbstractEntity::class, [['id' => 5]]);
+        $this->assertSame(5, $this->mock->getId());
+    }
+
+    public function tesSetId(): void
+    {
+        $this->mock->setId(2);
+        $this->assertSame(2, $this->mock->getId());
+    }
 }

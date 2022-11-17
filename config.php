@@ -30,5 +30,6 @@ return [
     ],
     'factory' => [
         'db' => \App\Factory\PdoFactory::class,
+        'userRepo' => \App\Factory\UserRepoFactory::class,
     ],
 ];

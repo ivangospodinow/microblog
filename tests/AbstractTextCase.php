@@ -2,6 +2,7 @@
 
 namespace Test;
 
+use App\Entity\UserEntity;
 use PHPUnit\Framework\TestCase;
 
 abstract class AbstractTextCase extends TestCase
@@ -24,5 +25,14 @@ abstract class AbstractTextCase extends TestCase
         $method->setAccessible(true);
 
         return $method->invokeArgs($object, $parameters);
+    }
+
+    protected function getUserEntityMock(): UserEntity
+    {
+        return new UserEntity([
+            'id' => rand(1, 1000),
+            'username' => 'username_' . uniqid(),
+            'password' => 'password_' . uniqid(),
+        ]);
     }
 }

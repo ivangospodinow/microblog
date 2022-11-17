@@ -21,6 +21,17 @@ abstract class AbstractEntity
         $this->exchangeArray($props);
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id):self
+    {
+        $this->id = $id;
+        return $this;
+    }
+
     public function getArrayCopy(): array
     {
         $data = [];
