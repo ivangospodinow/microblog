@@ -1,0 +1,25 @@
+{
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "required": true,
+            "minimum": 0,
+            "description": "#"
+        },
+        "username": {
+            "type": "string",
+            "required": true,
+            "minLength": 3,
+            "maxLength": 20,
+            "description": "Username"
+        },
+        "password": {
+            "type": "string",
+            "optional": true,
+            "minLength": 5,
+            "maxLength": 30,
+            "description": "Password"
+        }
+    }
+}

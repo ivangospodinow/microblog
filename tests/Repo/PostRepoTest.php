@@ -105,4 +105,22 @@ final class PostRepoTest extends AbstractTextCase
         $this->assertInstanceOf(PostEntity::class, $post);
         $this->assertSame($post->getArrayCopy(), $mockPost->getArrayCopy());
     }
+
+    public function testDelete()
+    {
+        $post = $this->getPostEntityMock();
+
+        $statementMock = $this->createMock(PDOStatement::class);
+        $statementMock->method('execute')
+            ->with([$post->getId()]);
+
+        $this->pdo
+            ->method('prepare')
+            ->with('DELETE FROM `posts` WHERE id = ?;')
+            ->willReturn($statementMock);
+
+        $result = $this->repo->delete($post);
+
+        $this->assertNull($result);
+    }
 }

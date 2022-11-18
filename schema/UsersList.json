@@ -1,0 +1,24 @@
+{
+    "type": "object",
+    "properties": {
+        "list": {
+            "type": "object",
+            "optional": true,
+            "properties": {
+                "limit": {
+                    "type": "integer",
+                    "optional": true,
+                    "minimum": 10,
+                    "maximum": 100,
+                    "description": "Records limit"
+                },
+                "page": {
+                    "type": "integer",
+                    "optional": true,
+                    "minimum": 1,
+                    "description": "Current list page"
+                }
+            }
+        }
+    }
+}

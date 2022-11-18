@@ -104,4 +104,43 @@ final class UserRepoTest extends AbstractTextCase
         $this->assertInstanceOf(UserEntity::class, $user);
         $this->assertSame($user->getArrayCopy(), $mockUser->getArrayCopy());
     }
+
+    public function testGetList()
+    {
+        $mockUser = $this->getUserEntityMock();
+        $userData = $mockUser->getArrayCopy();
+
+        $statementMock = $this->createMock(PDOStatement::class);
+        $statementMock->method('execute');
+
+        $statementMock->method('fetchAll')
+            ->willReturn([$userData]);
+
+        $this->pdo
+            ->method('prepare')
+            ->willReturn($statementMock);
+
+        $array = $this->repo->getList();
+
+        $this->assertIsArray($array);
+        $this->assertNotEmpty($array);
+    }
+
+    public function testDelete()
+    {
+        $user = $this->getUserEntityMock();
+
+        $statementMock = $this->createMock(PDOStatement::class);
+        $statementMock->method('execute')
+            ->with([$user->getId()]);
+
+        $this->pdo
+            ->method('prepare')
+            ->with('DELETE FROM `users` WHERE id = ?;')
+            ->willReturn($statementMock);
+
+        $result = $this->repo->delete($user);
+
+        $this->assertNull($result);
+    }
 }

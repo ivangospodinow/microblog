@@ -32,7 +32,7 @@ abstract class AbstractTextCase extends TestCase
     {
         return new UserEntity([
             'id' => rand(1, 1000),
-            'username' => 'username_' . uniqid(),
+            'username' => substr('username_' . uniqid(), 0, 20),
             'password' => 'password_' . uniqid(),
         ]);
     }
