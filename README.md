@@ -3,7 +3,7 @@
 [x] Install Slim v3, get to know the basics
 [x] Create project structure
 [x] Implement Service Locator and factory (library already provides it)
-[ ] Database - custom ORM ot top of PDO, Entity / Repo, maybe some database migration tool?
+[x] Database - custom ORM ot top of PDO, Entity / Repo, maybe some database migration tool?
 [ ] Api Controller
 [ ] Login Controller
 [ ] Post Controller
@@ -12,6 +12,21 @@
 [ ] Build and run scripts, instructions
 [ ] Recheck each point
 [ ] Reliase
+
+# commands
+``
+First time app run
+composer run-script appinit
+
+App reset - drops the database, removes .env and related files
+composer run-script appreset
+
+Starts app localhost
+composer run-script localhost
+
+Runs app tests
+composer run-script tests
+``
 
 # Microblog Task
 
