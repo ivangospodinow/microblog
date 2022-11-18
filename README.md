@@ -3,7 +3,7 @@
 [x] Install Slim v3, get to know the basics
 [x] Create project structure
 [x] Implement Service Locator and factory (library already provides it)
-[ ] Database - custom ORM ot top of PDO, Entity / Repo, maybe some database migration tool?
+[x] Database - custom ORM ot top of PDO, Entity / Repo, maybe some database migration tool?
 [ ] Api Controller
 [ ] Login Controller
 [ ] Post Controller
