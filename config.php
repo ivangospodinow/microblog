@@ -54,5 +54,11 @@ return [
             'uri' => '/api/users/{id}',
             'callback' => [\App\Controller\UsersApiController::class, 'delete'],
         ],
+        [
+            'type' => 'post',
+            'uri' => '/api/user/login',
+            'callback' => [\App\Controller\LoginApiController::class, 'login'],
+        ],
+
     ],
 ];
