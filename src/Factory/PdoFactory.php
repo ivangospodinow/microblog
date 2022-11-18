@@ -2,13 +2,14 @@
 
 namespace App\Factory;
 
+use App\Service\ServiceLocatorService;
 use PDO;
-use Slim\Container;
 
 class PdoFactory extends AbstractFactory
 {
-    public function __invoke(Container $config)
+    public function __invoke(ServiceLocatorService $serviceLocator)
     {
+        $config = $serviceLocator->getConfig();
         $db = $config['settings']['db'];
         $pdo = new PDO('mysql:host=' . $db['host'] . ';dbname=' . $db['dbname'],
             $db['user'], $db['pass']);

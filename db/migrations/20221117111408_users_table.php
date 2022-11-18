@@ -20,7 +20,7 @@ final class UsersTable extends AbstractMigration
     {
         $table = $this->table('users');
         $table->addColumn('username', 'string', ['limit' => 20, 'null' => false])
-            ->addColumn('password', 'string', ['limit' => 128, 'null' => false])
+            ->addColumn('password', 'string', ['limit' => 255, 'null' => false])
             ->addIndex(['username'], ['unique' => true])
             ->create();
     }

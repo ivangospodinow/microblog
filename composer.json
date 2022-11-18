@@ -2,7 +2,8 @@
     "require": {
         "slim/slim": "3.12.4",
         "vlucas/phpdotenv": "5.5.0",
-        "robmorgan/phinx": "^0.13.1"
+        "robmorgan/phinx": "^0.13.1",
+        "justinrainbow/json-schema": "^5.2"
     },
     "autoload": {
         "psr-4": {
@@ -18,6 +19,7 @@
             "@composer install",
             "@php scripts/appinit.php",
             "phinx migrate",
+            "phinx seed:run",
             "@php scripts/appinit_finish.php"
         ],
         "appreset": [

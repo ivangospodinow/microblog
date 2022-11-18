@@ -15,6 +15,21 @@ abstract class AbstractRepo
         $this->pdo = $pdo;
     }
 
+    public function transactionStart()
+    {
+        $this->pdo->beginTransaction();
+    }
+
+    public function transactionCommit()
+    {
+        $this->pdo->commit();
+    }
+
+    public function transactionRollback()
+    {
+        $this->pdo->rollBack();
+    }
+
     public function save(AbstractEntity $entity): void
     {
         if ($entity->getId()) {
@@ -77,6 +92,22 @@ abstract class AbstractRepo
         unset($statement);
     }
 
+    /**
+     * Always performs full update of the entity
+     *
+     * @param AbstractEntity $entity
+     * @return void
+     */
+    public function delete(AbstractEntity $entity): void
+    {
+        $sql = sprintf(
+            'DELETE FROM `%s` WHERE id = ?;',
+            $entity::TABLE
+        );
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([$entity->getId()]);
+    }
+
     public function find(int $id): ?AbstractEntity
     {
         $sql = sprintf(
@@ -91,6 +122,38 @@ abstract class AbstractRepo
             return $this->createEntity($data);
         }
         return null;
+    }
+
+    public function search(array $where): array
+    {
+        $keys = [];
+        foreach ($where as $name => $value) {
+            $keys[] = sprintf(
+                '`%s` = ?',
+                $name
+            );
+        }
+
+        $sql = sprintf(
+            'SELECT * FROM :table WHERE %s;',
+            implode(' AND ', $keys)
+        );
+
+        return $this->getSqlEntities($sql, array_values($where));
+    }
+
+    public function getSqlEntities($sql, $params = []): array
+    {
+        $sql = str_replace(':table', '`' . $this->entity::TABLE . '`', $sql);
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute($params);
+
+        $result = [];
+        $data = $statement->fetchAll();
+        foreach ($data as $pair) {
+            $result[] = $this->createEntity($pair);
+        }
+        return $result;
     }
 
     protected function createEntity(array $data): AbstractEntity

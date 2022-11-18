@@ -33,4 +33,26 @@ return [
         'userRepo' => \App\Factory\UserRepoFactory::class,
         'postRepo' => \App\Factory\PostRepoFactory::class,
     ],
+    'routes' => [
+        [
+            'type' => 'get',
+            'uri' => '/api/users',
+            'callback' => [\App\Controller\UsersApiController::class, 'index'],
+        ],
+        [
+            'type' => 'post',
+            'uri' => '/api/users',
+            'callback' => [\App\Controller\UsersApiController::class, 'create'],
+        ],
+        [
+            'type' => 'put',
+            'uri' => '/api/users/{id}',
+            'callback' => [\App\Controller\UsersApiController::class, 'update'],
+        ],
+        [
+            'type' => 'delete',
+            'uri' => '/api/users/{id}',
+            'callback' => [\App\Controller\UsersApiController::class, 'delete'],
+        ],
+    ],
 ];

@@ -3,12 +3,12 @@
 namespace App\Factory;
 
 use App\Repo\UserRepo;
-use Slim\Container;
+use App\Service\ServiceLocatorService;
 
 class UserRepoFactory extends AbstractFactory
 {
-    public function __invoke(Container $config)
+    public function __invoke(ServiceLocatorService $serviceLocator)
     {
-        return new UserRepo($config->db);
+        return new UserRepo($serviceLocator->get('db'));
     }
 }

@@ -26,7 +26,7 @@ abstract class AbstractEntity
         return $this->id;
     }
 
-    public function setId(int $id):self
+    public function setId(int $id): self
     {
         $this->id = $id;
         return $this;
@@ -43,6 +43,10 @@ abstract class AbstractEntity
 
     public function exchangeArray(array $props)
     {
+        if (isset($props[$this::PK])) {
+            $props[$this::PK] = (int) $props[$this::PK];
+        }
+
         foreach ($props as $name => $value) {
             if ($this->hasProp($name)) {
                 $this->$name = $value;

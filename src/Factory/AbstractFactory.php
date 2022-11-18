@@ -2,9 +2,9 @@
 
 namespace App\Factory;
 
-use Slim\Container;
+use App\Service\ServiceLocatorService;
 
 abstract class AbstractFactory
 {
-    abstract public function __invoke(Container $config);
+    abstract public function __invoke(ServiceLocatorService $serviceLocator);
 }
