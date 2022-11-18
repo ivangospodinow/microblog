@@ -41,8 +41,7 @@ abstract class AbstractTextCase extends TestCase
     {
         return new PostEntity([
             'id' => rand(1, 1000),
-            'userId' => rand(1, 1000),
-            'uri' => uniqid('post-'),
+            'createdBy' => rand(1, 1000),
             'title' => uniqid('title-'),
             'content' => str_repeat(uniqid(), rand(1, 10)),
             'image' => '/hello.png',

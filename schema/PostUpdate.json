@@ -1,0 +1,37 @@
+{
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "optional": true,
+            "minimum": 0,
+            "description": "#"
+        },
+        "createdBy": {
+            "type": "integer",
+            "optional": true,
+            "minimum": 0,
+            "description": "User id"
+        },
+        "title": {
+            "type": "string",
+            "optional": true,
+            "minLength": 5,
+            "maxLength": 255,
+            "description": "Post title"
+        },
+        "content": {
+            "type": "string",
+            "optional": true,
+            "minLength": 0,
+            "description": "Post content"
+        },
+        "image": {
+            "type": "string",
+            "optional": true,
+            "minLength": 0,
+            "maxLength": 255,
+            "description": "Post image"
+        }
+    }
+}

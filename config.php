@@ -60,5 +60,25 @@ return [
             'callback' => [\App\Controller\LoginApiController::class, 'login'],
         ],
 
+        [
+            'type' => 'get',
+            'uri' => '/api/posts',
+            'callback' => [\App\Controller\PostsApiController::class, 'index'],
+        ],
+        [
+            'type' => 'post',
+            'uri' => '/api/posts',
+            'callback' => [\App\Controller\PostsApiController::class, 'create'],
+        ],
+        [
+            'type' => 'put',
+            'uri' => '/api/posts/{id}',
+            'callback' => [\App\Controller\PostsApiController::class, 'update'],
+        ],
+        [
+            'type' => 'delete',
+            'uri' => '/api/posts/{id}',
+            'callback' => [\App\Controller\PostsApiController::class, 'delete'],
+        ],
     ],
 ];

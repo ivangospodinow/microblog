@@ -19,16 +19,15 @@ final class PostTable extends AbstractMigration
     public function change()
     {
         $table = $this->table('posts');
-        $table->addColumn('userId', 'integer', ['null' => false])
-            ->addColumn('uri', 'string', ['limit' => 255, 'null' => false])
+        $table->addColumn('createdBy', 'integer', ['null' => false])
             ->addColumn('title', 'string', ['limit' => 255, 'null' => false])
             ->addColumn('content', 'text', ['null' => false])
             ->addColumn('image', 'string', ['limit' => 255, 'null' => false])
             ->addColumn('createdAt', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'null' => false])
             ->addColumn('updatedAt', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'null' => false])
-            ->addIndex(['uri'], ['unique' => true]);
+        ;
         // @TODO fix it
-        // ->addForeignKey('userId', 'users', ['id'], ['constraint' => 'post_user_id']);
+        // ->addForeignKey('createdBy', 'users', ['id'], ['constraint' => 'post_user_id']);
         $table->save();
     }
 }

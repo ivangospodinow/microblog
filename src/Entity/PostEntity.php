@@ -6,8 +6,7 @@ class PostEntity extends AbstractEntity
 {
     const TABLE = 'posts';
 
-    public $userId;
-    public $uri;
+    public $createdBy;
     public $title;
     public $content;
     public $image;

@@ -7,7 +7,7 @@
 [X] Api Controller
 [X] Users Controller
 [X] Login Controller
-[ ] Post Controller
+[X] Post Controller
 [ ] Boostrap 4 view
 [ ] React implementation
 [ ] Build and run scripts, instructions
