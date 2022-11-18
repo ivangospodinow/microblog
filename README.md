@@ -4,7 +4,8 @@
 [x] Create project structure
 [x] Implement Service Locator and factory (library already provides it)
 [x] Database - custom ORM ot top of PDO, Entity / Repo, maybe some database migration tool?
-[ ] Api Controller
+[X] Api Controller
+[X] Users Controller
 [ ] Login Controller
 [ ] Post Controller
 [ ] Boostrap 4 view
