@@ -191,4 +191,26 @@ export default class DataService {
                 )
         });
     }
+
+    public deleteUser(id: number): Promise<UserSave> {
+        return new Promise((resolve: CallableFunction, reject: CallableFunction) => {
+            this.fetch(this.uri + '/api/users/' + id, {
+                method: 'DELETE',
+            })
+                .then(res => res.json())
+                .then(
+                    (result) => {
+                        resolve(result);
+                    },
+                    // Note: it's important to handle errors here
+                    // instead of a catch() block so that we don't swallow
+                    // exceptions from actual bugs in components.
+                    (error) => {
+                        console.error(error);
+                        resolve(undefined);
+                    }
+                )
+        });
+    }
+
 }

@@ -43,6 +43,10 @@ foreach ($config['routes'] as $route) {
             $params = json_decode(urldecode($params['json']), true);
         }
 
+        if (empty($params)) {
+            $params = [];
+        }
+
         $callback = $route['callback'];
         return $response->withJson(call_user_func_array(
             [

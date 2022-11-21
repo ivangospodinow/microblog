@@ -7,19 +7,23 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { BlogProps } from '../Blog';
-import { ADMIN_LIST_RECORDS_COUNT } from '../../config';
+import { ADMIN_LIST_RECORDS_COUNT, HOMEPAGE_LAST_POSTS_COUNT } from '../../config';
 import { BlogUser, BlogUsers } from "../../Service/DataService";
 import Button from '@mui/material/Button';
 
 import UserForm from "../Form/UserForm";
 import AddIcon from '@mui/icons-material/Add';
-
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import UserDeleteForm from "../Form/UserDeleteForm";
+import { Skeleton } from '@mui/material';
 
 export default function UsersTable(props: BlogProps) {
 
+  const [userToDelete, setUserToDelete] = useState<BlogUser>();
+
   const [showUserForm, setShowUserForm] = useState<boolean>(false);
   const [userToEdit, setUserToEdit] = useState<BlogUser | null>();
-  const [users, setUsers] = useState<BlogUsers>([]);
+  const [users, setUsers] = useState<BlogUsers>(undefined);
   const [usersLoaded, setUsersLoaded] = useState(false);
 
   let { page } = useParams<{ page: string }>();
@@ -40,7 +44,6 @@ export default function UsersTable(props: BlogProps) {
 
 
   }, [usersLoaded, page]);
-
 
   return (
     <React.Fragment>
@@ -73,11 +76,32 @@ export default function UsersTable(props: BlogProps) {
                 }}>
                   Edit
                 </Button>
+                &nbsp;
+                <Button variant="outlined" size="small" onClick={() => {
+                  setUserToDelete(row);
+                }} style={{
+                  minWidth: 0,
+                }}>
+                  <DeleteForeverIcon />
+                </Button>
               </TableCell>
-
-
             </TableRow>
           ))}
+          {!usersLoaded && undefined === users && Array(HOMEPAGE_LAST_POSTS_COUNT).fill(0).map((_, key: number) => {
+            return (
+              <TableRow key={key}>
+                <TableCell>
+                  <Skeleton variant="rectangular" width={'100%'} height={'1em'} />
+                </TableCell>
+                <TableCell>
+                  <Skeleton variant="rectangular" width={'100%'} height={'1em'} />
+                </TableCell>
+                <TableCell align="right">
+                  <Skeleton variant="rectangular" width={'100%'} height={'1em'} />
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
 
@@ -92,6 +116,18 @@ export default function UsersTable(props: BlogProps) {
           }
         }} dataService={props.dataService} />
       )}
+
+      {userToDelete && (
+        <UserDeleteForm title={'Delete user ' + userToDelete.username} user={userToDelete} onClose={(refresh: boolean) => {
+          setUserToDelete(undefined);
+          if (refresh) {
+            setUsers([]);
+            setUsersLoaded(false);
+          }
+        }} dataService={props.dataService} />
+      )}
+
+
 
     </React.Fragment>
   );
