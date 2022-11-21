@@ -80,5 +80,10 @@ return [
             'uri' => '/api/posts/{id}',
             'callback' => [\App\Controller\PostsApiController::class, 'delete'],
         ],
+        [
+            'type' => 'get',
+            'uri' => '/api/posts/months',
+            'callback' => [\App\Controller\PostsApiController::class, 'months'],
+        ],
     ],
 ];

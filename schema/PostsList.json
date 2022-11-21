@@ -8,7 +8,7 @@
                 "limit": {
                     "type": "integer",
                     "optional": true,
-                    "minimum": 10,
+                    "minimum": 1,
                     "maximum": 100,
                     "description": "Records limit"
                 },
@@ -17,6 +17,27 @@
                     "optional": true,
                     "minimum": 1,
                     "description": "Current list page"
+                }
+            }
+        },
+        "filter": {
+            "type": "object",
+            "optional": true,
+            "properties": {
+                "featured": {
+                    "type": "boolean",
+                    "optional": true,
+                    "description": "Filter featured posts"
+                },
+                "archive": {
+                    "type": "string",
+                    "optional": true,
+                    "description": "Filter posts by month"
+                },
+                "postId": {
+                    "type": "string",
+                    "optional": true,
+                    "description": "Filter post id"
                 }
             }
         }

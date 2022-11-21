@@ -7,8 +7,11 @@ use PDO;
 
 abstract class AbstractRepo
 {
+    const DYNAMIC_COLUMN = '__ds_';
+
     protected $entity = AbstractEntity::class;
     private $pdo;
+    private static $namespaceCount = 0;
 
     public function __construct(PDO $pdo)
     {
@@ -144,21 +147,148 @@ abstract class AbstractRepo
 
     public function getSqlEntities($sql, $params = []): array
     {
+        return $this->executeQueryWithResult($sql, $params, true);
+    }
+
+    /**
+     * Example
+
+    $this->joinEntity(
+    $sql,
+    UserEntity::class,
+    'createdBy',
+    'createdByUser'
+    );
+
+     *
+     * @param string $sql
+     * @param string $joinEntityClass
+     * @param string $localKey
+     * @param string $objectKey
+     * @return void
+     */
+    public function joinEntity(string $sql, string $joinEntityClass, string $localKey, string $objectKey, array $props = [])
+    {
+        $entity = new $joinEntityClass;
+        $entitiyName = end(explode('\\', $joinEntityClass));
+        if (empty($props)) {
+            $props = $entity->getProps();
+        }
+
+        $namespace = $this->getNamespace($entity::TABLE);
+
+        $select = [];
+        foreach ($props as $name) {
+            // users_1.username AS __ds_createdByUser__ds_username
+            $select[] = sprintf(
+                '%s.%s AS %s%s_%s_%s',
+                $namespace,
+                $name,
+                self::DYNAMIC_COLUMN,
+                $objectKey,
+                $entitiyName,
+                $name
+            );
+        }
+
+        // cover the basic case
+        $sql = str_replace('FROM', ',' . implode(',' . PHP_EOL, $select) . PHP_EOL . 'FROM', $sql);
+
+        // join table before where
+        $join = sprintf(
+            'LEFT JOIN %s AS %s ON t.%s = %s.id',
+            $entity::TABLE,
+            $namespace,
+            $localKey,
+            $namespace
+        );
+        $sql = str_replace(
+            'WHERE',
+            $join . PHP_EOL . 'WHERE',
+            $sql
+        );
+
+        return $sql;
+    }
+
+    protected function createEntity(array $data, $couldHaveRelations = false): AbstractEntity
+    {
+        $class = $this->entity;
+        $entity = new $class($data);
+
+        if ($couldHaveRelations) {
+            $this->populateDynamicJoinsToEntity($entity, $data);
+        }
+
+        return $entity;
+    }
+
+    protected function executeQueryWithResult(string $sql, array $params = [], bool $createEntity = false)
+    {
         $sql = str_replace(':table', '`' . $this->entity::TABLE . '`', $sql);
+        $sql = str_replace(':where', 1, $sql);
+
         $statement = $this->pdo->prepare($sql);
         $statement->execute($params);
 
-        $result = [];
+        // an estimate, if the code should check for dynamic joins
+        $couldHaveRelations = strpos($sql, self::DYNAMIC_COLUMN) !== false;
+
         $data = $statement->fetchAll();
-        foreach ($data as $pair) {
-            $result[] = $this->createEntity($pair);
+        if ($createEntity) {
+            $result = [];
+            foreach ($data as $pair) {
+                $result[] = $this->createEntity($pair, $couldHaveRelations);
+            }
+            return $result;
         }
-        return $result;
+        return $data;
     }
 
-    protected function createEntity(array $data): AbstractEntity
+    private function populateDynamicJoinsToEntity(AbstractEntity $entity, array $data)
     {
-        $class = $this->entity;
-        return new $class($data);
+        $relations = [];
+        $checkKeyLength = strlen(self::DYNAMIC_COLUMN);
+        foreach ($data as $name => $value) {
+            if (substr($name, 0, $checkKeyLength) !== self::DYNAMIC_COLUMN) {
+                continue;
+            }
+
+            // format:  objectKey_EntityName_field
+            $pair = explode(
+                '_',
+                substr($name, $checkKeyLength)
+            );
+
+            if (count($pair) < 3) {
+                throw new \Exception('Invalid dynamic format name: ' . $name);
+            }
+
+            $objectKey = $pair[0];
+            $entityName = $pair[1];
+            unset($pair[0], $pair[1]);
+            // in case of underscore name
+            $field = implode('_', $pair);
+
+            if (!isset($relations[$objectKey])) {
+                $relations[$objectKey] = [
+                    'entity' => 'App\\Entity\\' . $entityName,
+                    'props' => [],
+                ];
+            }
+
+            $relations[$objectKey]['props'][$field] = $value;
+        }
+
+        foreach ($relations as $objectKey => $relation) {
+            $relationEntity = new $relation['entity']($relation['props']);
+            $entity->setRelation($objectKey, $relationEntity);
+        }
+    }
+
+    private function getNamespace(string $prepend): string
+    {
+        self::$namespaceCount++;
+        return $prepend . '_' . self::$namespaceCount;
     }
 }

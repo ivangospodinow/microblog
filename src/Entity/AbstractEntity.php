@@ -15,6 +15,7 @@ abstract class AbstractEntity
      * @var array
      */
     private static $props = [];
+    private $relations = [];
 
     final public function __construct(array $props = [])
     {
@@ -38,6 +39,15 @@ abstract class AbstractEntity
         foreach ($this->getProps() as $name) {
             $data[$name] = $this->$name;
         }
+
+        foreach ($this->relations as $key => $entity) {
+            if (!isset($data[$key])) {
+                $data[$key] = $entity->getArrayCopy();
+            } else {
+                throw new \Exception('Relation key can not colide with internal props. ' . $key);
+            }
+        }
+
         return $data;
     }
 
@@ -50,13 +60,17 @@ abstract class AbstractEntity
         foreach ($props as $name => $value) {
             if ($this->hasProp($name)) {
                 $this->$name = $value;
-            } else {
-                error_log('unexpected prop ' . get_class($this) . '::' . $name);
             }
         }
     }
 
-    private function getProps(): array
+    public function setRelation(string $key, AbstractEntity $entity): self
+    {
+        $this->relations[$key] = $entity;
+        return $this;
+    }
+
+    public function getProps(): array
     {
         $key = get_class($this);
         if (!isset(self::$props[$key])) {
@@ -67,6 +81,7 @@ abstract class AbstractEntity
                     array_keys(get_object_vars($this))
                 )
             );
+            unset(self::$props[$key][array_search('relations', self::$props[$key])]);
         }
         return self::$props[$key];
     }

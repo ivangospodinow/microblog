@@ -29,7 +29,7 @@ class LoginApiController extends AbstractApiController
 
         return [
             'success' => true,
-            'data' => $data,
+            'user' => $data,
         ];
 
     }

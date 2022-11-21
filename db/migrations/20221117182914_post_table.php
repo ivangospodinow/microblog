@@ -23,8 +23,12 @@ final class PostTable extends AbstractMigration
             ->addColumn('title', 'string', ['limit' => 255, 'null' => false])
             ->addColumn('content', 'text', ['null' => false])
             ->addColumn('image', 'string', ['limit' => 255, 'null' => false])
+            ->addColumn('featured', 'boolean', ['default' => 0])
             ->addColumn('createdAt', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'null' => false])
             ->addColumn('updatedAt', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'null' => false])
+
+            ->addIndex(['featured'])
+            ->addIndex(['createdAt'])
         ;
         // @TODO fix it
         // ->addForeignKey('createdBy', 'users', ['id'], ['constraint' => 'post_user_id']);

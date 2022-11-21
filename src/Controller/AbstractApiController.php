@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Service\ServiceLocatorService;
+use stdClass;
 
 abstract class AbstractApiController
 {
@@ -21,13 +22,25 @@ abstract class AbstractApiController
         return $array;
     }
 
+    protected function prepareListParams(array $params): array
+    {
+        if (isset($params['list']['limit'])) {
+            $params['list']['limit'] = (int) $params['list']['limit'];
+        }
+        if (isset($params['list']['page'])) {
+            $params['list']['page'] = (int) $params['list']['page'];
+        }
+        return $params;
+    }
+
     protected function validateSchemaWithErrorReponse(array $params, string $schema)
     {
         $validator = new \JsonSchema\Validator;
-        $objectToValidate = (object) $params;
+        $objectToValidate = empty($params) ? new stdClass : json_decode(json_encode($params));
+
         $validator->validate(
-            $objectToValidate, (object)
-            [
+            $objectToValidate,
+            (object) [
                 '$ref' => 'file://' . realpath('schema/' . $schema),
             ]
         );
@@ -49,6 +62,6 @@ abstract class AbstractApiController
 
     protected function getOffset(array $params)
     {
-        return ($params['list']['page'] ?? 0) * $this->getLimit($params);
+        return (($params['list']['page'] ?? 1) - 1) * $this->getLimit($params);
     }
 }

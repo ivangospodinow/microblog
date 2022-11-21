@@ -7,20 +7,15 @@ class PostsApiController extends AbstractApiController
 {
     public function index(array $params)
     {
+        $params = $this->prepareListParams($params);
         if ($errors = $this->validateSchemaWithErrorReponse($params, 'PostsList.json')) {
             return $errors;
         }
 
-        $limit = $this->getLimit($params);
-        $offset = $this->getOffset($params);
-
         return [
             'requrest' => $params,
             'list' => $this->arrayToList(
-                $this->serviceLocator->get('postRepo')->getList(
-                    $limit,
-                    $offset
-                )
+                $this->serviceLocator->get('postRepo')->getList($params)
             ),
         ];
     }
@@ -107,4 +102,12 @@ class PostsApiController extends AbstractApiController
             'id' => $post->getId(),
         ];
     }
+
+    public function months()
+    {
+        return [
+            'list' => $this->serviceLocator->get('postRepo')->getMonths(),
+        ];
+    }
+
 }

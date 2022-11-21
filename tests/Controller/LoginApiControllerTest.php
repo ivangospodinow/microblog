@@ -91,6 +91,6 @@ final class LoginApiControllerTest extends AbstractTextCase
 
         $data = $user->getArrayCopy();
         unset($data['password']);
-        $this->assertSame($data, $result['data']);
+        $this->assertSame($data, $result['user']);
     }
 }
