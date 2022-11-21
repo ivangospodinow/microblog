@@ -17,6 +17,24 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import UserDeleteForm from "../Form/UserDeleteForm";
 import { Skeleton } from '@mui/material';
 
+function createRow(row: {
+  key: any,
+  id: any,
+  username: any,
+  buttons: any,
+}) {
+  return (
+    <TableRow key={row.key}>
+      <TableCell>{row.id}</TableCell>
+      <TableCell>{row.username}</TableCell>
+      <TableCell align="right">
+        {row.buttons}
+      </TableCell>
+    </TableRow>
+  );
+}
+
+
 export default function UsersTable(props: BlogProps) {
 
   const [userToDelete, setUserToDelete] = useState<BlogUser>();
@@ -65,42 +83,38 @@ export default function UsersTable(props: BlogProps) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {users && users.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.id}</TableCell>
-              <TableCell>{row.username}</TableCell>
-              <TableCell align="right">
-                <Button variant="outlined" size="small" onClick={() => {
-                  setUserToEdit(row);
-                  setShowUserForm(true);
-                }}>
-                  Edit
-                </Button>
-                &nbsp;
-                <Button variant="outlined" size="small" onClick={() => {
-                  setUserToDelete(row);
-                }} style={{
-                  minWidth: 0,
-                }}>
-                  <DeleteForeverIcon />
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
+          {users && users.map((row) => {
+            return createRow({
+              key: row.id,
+              id: row.id,
+              username: row.username,
+              buttons: (
+                <>
+                  <Button variant="outlined" size="small" onClick={() => {
+                    setUserToEdit(row);
+                    setShowUserForm(true);
+                  }}>
+                    Edit
+                  </Button>
+                  &nbsp;
+                  <Button variant="outlined" size="small" onClick={() => {
+                    setUserToDelete(row);
+                  }} style={{
+                    minWidth: 0,
+                  }}>
+                    <DeleteForeverIcon />
+                  </Button>
+                </>
+              )
+            });
+          })}
           {!usersLoaded && undefined === users && Array(HOMEPAGE_LAST_POSTS_COUNT).fill(0).map((_, key: number) => {
-            return (
-              <TableRow key={key}>
-                <TableCell>
-                  <Skeleton variant="rectangular" width={'100%'} height={'1em'} />
-                </TableCell>
-                <TableCell>
-                  <Skeleton variant="rectangular" width={'100%'} height={'1em'} />
-                </TableCell>
-                <TableCell align="right">
-                  <Skeleton variant="rectangular" width={'100%'} height={'1em'} />
-                </TableCell>
-              </TableRow>
-            );
+            return createRow({
+              key,
+              id: (<Skeleton variant="rectangular" width={'100%'} height={'1em'} />),
+              username: (<Skeleton variant="rectangular" width={'100%'} height={'1em'} />),
+              buttons: (<Skeleton variant="rectangular" width={'100%'} height={'1em'} />),
+            });
           })}
         </TableBody>
       </Table>
@@ -126,9 +140,6 @@ export default function UsersTable(props: BlogProps) {
           }
         }} dataService={props.dataService} />
       )}
-
-
-
     </React.Fragment>
   );
 }
