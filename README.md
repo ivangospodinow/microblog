@@ -25,20 +25,20 @@ composer run-script tests
 ```
 
 # App development plan
-[x] Have fun, it is a new project :)
-[x] Install Slim v3, get to know the basics
-[x] Create project structure
-[x] Implement Service Locator and factory (library already provides it)
-[x] Database - custom ORM ot top of PDO, Entity / Repo, maybe some database migration tool?
-[X] Api Controller
-[X] Users Controller
-[X] Login Controller
-[X] Post Controller
-[ ] Boostrap 4 view
-[X] React implementation
-[X] Build and run scripts, instructions
-[ ] Recheck each point
-[ ] Reliase
+- [x] Have fun, it is a new project :)
+- [x] Install Slim v3, get to know the basics
+- [x] Create project structure
+- [x] Implement Service Locator and factory (library already provides it)
+- [x] Database - custom ORM ot top of PDO, Entity / Repo, maybe some database migration tool?
+- [X] Api Controller
+- [X] Users Controller
+- [X] Login Controller
+- [X] Post Controller
+- [ ] Boostrap 4 view
+- [X] React implementation
+- [X] Build and run scripts, instructions
+- [ ] Recheck each point
+- [ ] Reliase
 
 # Microblog Task
 
