@@ -17,6 +17,7 @@ composer run-script appinit
 composer run-script localhost-backend
 # runs frontend from build, no npm install required
 composer run-script localhost-frontend-build
+# open http://localhost:3000/
 ```
 
 # Testing
