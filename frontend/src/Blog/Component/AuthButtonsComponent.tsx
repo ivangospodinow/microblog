@@ -10,13 +10,13 @@ export default function AuthButtonsComponent(props: BlogProps) {
             {props.userService.isLogged() && (
                 <>
                     <Button variant={uri.includes('/admin/users') ? 'contained' : 'outlined'} size="small" onClick={() => {
-                        window.location.href = '/admin/users';
+                        window.location.href = '/admin/users/1';
                     }} >
                         Users
                     </Button>
                     &nbsp;
                     <Button variant={uri.includes('/admin/posts') ? 'contained' : 'outlined'} size="small" onClick={() => {
-                        window.location.href = '/admin/posts';
+                        window.location.href = '/admin/posts/1';
                     }} >
                         Posts
                     </Button>

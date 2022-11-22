@@ -17,6 +17,9 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import UserDeleteForm from "../Form/UserDeleteForm";
 import { Skeleton } from '@mui/material';
 import ApiErrorsComponent from "./ApiErrorsComponent";
+import ButtonGroup from '@mui/material/ButtonGroup';
+import SpacerComponent from "./SpacerComponent";
+
 
 function createRow(row: {
   key: any,
@@ -124,6 +127,32 @@ export default function UsersTable(props: BlogProps) {
           })}
         </TableBody>
       </Table>
+
+      <SpacerComponent />
+
+      <div>
+        <ButtonGroup variant="contained" aria-label="outlined primary button group">
+          <Button
+            variant="contained"
+            onClick={() => {
+              window.location.href = '/admin/posts/' + (currentPage - 1);
+            }}
+            disabled={!(usersLoaded && currentPage > 1)}
+          >
+            Prev Page
+          </Button>
+
+          <Button
+            variant="contained"
+            onClick={() => {
+              window.location.href = '/admin/posts/' + (currentPage + 1);
+            }}
+            disabled={!(usersLoaded && (users && users.length >= HOMEPAGE_LAST_POSTS_COUNT))}
+          >
+            Next Page
+          </Button>
+        </ButtonGroup>
+      </div>
 
       {showUserForm && (
         <UserForm title={'Edit user'} user={userToEdit || undefined} onClose={(refresh: boolean) => {

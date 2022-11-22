@@ -43,11 +43,6 @@ export default function Header(props: BlogProps) {
           Microblog
         </Typography>
 
-        <IconButton>
-          <SearchIcon />
-        </IconButton>
-
-
         <IconButton onClick={() => {
           window.location.href = '/';
         }}>

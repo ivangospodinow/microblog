@@ -52,11 +52,11 @@ export default function Blog(props: BlogProps) {
   if (props.userService.isLogged()) {
     routes.push(...[
       {
-        path: "/admin/users",
+        path: "/admin/users/:page",
         element: <AdminUsers {...props} />,
       },
       {
-        path: "/admin/posts",
+        path: "/admin/posts/:page",
         element: <AdminPosts {...props} />,
       },
     ]);

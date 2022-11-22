@@ -13,11 +13,15 @@ import Button from '@mui/material/Button';
 
 import AddIcon from '@mui/icons-material/Add';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { Skeleton } from '@mui/material';
+import { Skeleton, Divider } from '@mui/material';
 import PostForm from "../Form/PostForm";
 import PostDeleteForm from "../Form/PostDeleteForm";
 import ApiErrorsComponent from "./ApiErrorsComponent";
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import Link from '@mui/material/Link';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import SpacerComponent from "./SpacerComponent";
+
 
 function createRow(row: {
   key: any,
@@ -147,6 +151,32 @@ export default function PostsTable(props: BlogProps) {
           })}
         </TableBody>
       </Table>
+
+      <SpacerComponent />
+
+      <div>
+        <ButtonGroup variant="contained" aria-label="outlined primary button group">
+          <Button
+            variant="contained"
+            onClick={() => {
+              window.location.href = '/admin/posts/' + (currentPage - 1);
+            }}
+            disabled={!(postsLoaded && currentPage > 1)}
+          >
+            Prev Page
+          </Button>
+
+          <Button
+            variant="contained"
+            onClick={() => {
+              window.location.href = '/admin/posts/' + (currentPage + 1);
+            }}
+            disabled={!(postsLoaded && (posts && posts.length >= HOMEPAGE_LAST_POSTS_COUNT))}
+          >
+            Next Page
+          </Button>
+        </ButtonGroup>
+      </div>
 
       {showPostForm && (
         <PostForm title={'Edit post'} post={postToEdit || undefined} onClose={(refresh: boolean) => {
