@@ -42,9 +42,9 @@ try {
     }
 
 } catch (\Exception $e) {
-    var_dump($e);die;
     echo 'Database related exception.' . PHP_EOL;
-    echo $e . PHP_EOL;
+    echo $e->getMessage() . PHP_EOL;
+    echo 'Make sure your database server is running' . PHP_EOL;
     exit;
 }
 

@@ -1,3 +1,29 @@
+# Requirements
+- php 7.4
+- mysql database
+- composer
+- npm (to run non build frontend)
+- git
+
+# Installation
+```sh
+git clone https://github.com/ivangospodinow/microblog.git ./microblog
+cd microblog
+# change env variables as needed
+cp .env.example .env
+# will do composer install, database creation, migrations and seeding. 
+composer run-script appinit
+# starts the backend server, timeout is 1 hour
+composer run-script localhost-backend
+# runs frontend from build, no npm install required
+composer run-script localhost-frontend-build
+```
+
+# Testing
+```sh
+composer run-script tests
+```
+
 # App development plan
 [x] Have fun, it is a new project :)
 [x] Install Slim v3, get to know the basics
@@ -10,24 +36,9 @@
 [X] Post Controller
 [ ] Boostrap 4 view
 [X] React implementation
-[ ] Build and run scripts, instructions
+[X] Build and run scripts, instructions
 [ ] Recheck each point
 [ ] Reliase
-
-# commands
-``
-First time app run
-composer run-script appinit
-
-App reset - drops the database, removes .env and related files
-composer run-script appreset
-
-Starts app localhost
-composer run-script localhost
-
-Runs app tests
-composer run-script tests
-``
 
 # Microblog Task
 

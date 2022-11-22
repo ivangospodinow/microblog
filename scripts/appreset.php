@@ -14,9 +14,9 @@ try {
 
     $pdo->query("DROP DATABASE IF EXISTS " . $db['dbname'])->execute();
 } catch (\Exception $e) {
-    var_dump($e);die;
     echo 'Database related exception.' . PHP_EOL;
-    echo $e . PHP_EOL;
+    echo $e->getMessage() . PHP_EOL;
+    echo 'Make sure your database server is running' . PHP_EOL;
     exit;
 }
 echo 'Removing .env file...' . PHP_EOL;

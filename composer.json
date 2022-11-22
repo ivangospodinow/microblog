@@ -26,7 +26,13 @@
             "@composer install",
             "@php scripts/appreset.php"
         ],
-        "localhost": "php -S 127.0.0.1:8888 -t public",
+        "localhost-backend": "php -S 127.0.0.1:8888 -t public",
+        "localhost-frontend": [
+            "cd frontend && npm install",
+            "npm start --prefix ./frontend"
+        ],
+        "frontend-build": "npm run build --prefix frontend",
+        "localhost-frontend-build": "php -S 127.0.0.1:8889 -t frontend/build",
         "tests": "phpunit tests"
     },
     "config": {

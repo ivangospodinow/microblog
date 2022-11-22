@@ -18,7 +18,7 @@ export default function Header(props: BlogProps) {
         <Link
           display="block"
           variant="body1"
-          href={'https://github.com/ivangospodinow/'}
+          href={'https://github.com/ivangospodinow/microblog'}
           sx={{ mb: 0.5 }}
         >
           <Stack direction="row" spacing={1} alignItems="center">
