@@ -7,9 +7,9 @@ use App\Repo\PostRepo;
 use App\Repo\UserRepo;
 use App\Service\AuthUser;
 use App\Service\ServiceLocatorService;
-use Test\AbstractTextCase;
+use Test\AbstractTestCase;
 
-final class PostsApiControllerTest extends AbstractTextCase
+final class PostsApiControllerTest extends AbstractTestCase
 {
     public function testIndexBasicResponse()
     {

@@ -3,9 +3,9 @@
 namespace Test\Service;
 
 use App\Service\ServiceLocatorService;
-use Test\AbstractTextCase;
+use Test\AbstractTestCase;
 
-final class ServiceLocatorServiceTest extends AbstractTextCase
+final class ServiceLocatorServiceTest extends AbstractTestCase
 {
     public function testMethods()
     {

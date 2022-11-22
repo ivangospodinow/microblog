@@ -6,9 +6,9 @@ use App\Controller\LoginApiController;
 use App\Repo\UserRepo;
 use App\Service\AuthUser;
 use App\Service\ServiceLocatorService;
-use Test\AbstractTextCase;
+use Test\AbstractTestCase;
 
-final class LoginApiControllerTest extends AbstractTextCase
+final class LoginApiControllerTest extends AbstractTestCase
 {
     public function testLoginWithoutData()
     {

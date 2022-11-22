@@ -8,9 +8,9 @@ use App\Repo\UserRepo;
 use PDO;
 use PDOStatement;
 use PHPUnit\Framework\MockObject\MockObject;
-use Test\AbstractTextCase;
+use Test\AbstractTestCase;
 
-final class PostRepoTest extends AbstractTextCase
+final class PostRepoTest extends AbstractTestCase
 {
     /**
      * @var MockObject

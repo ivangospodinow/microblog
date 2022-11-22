@@ -3,9 +3,9 @@
 namespace Test\Entity;
 
 use App\Entity\AbstractEntity;
-use Test\AbstractTextCase;
+use Test\AbstractTestCase;
 
-final class AbstractEntityTest extends AbstractTextCase
+final class AbstractEntityTest extends AbstractTestCase
 {
     /**
      * @var AbstractEntity

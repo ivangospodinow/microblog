@@ -6,7 +6,7 @@ use App\Entity\PostEntity;
 use App\Entity\UserEntity;
 use PHPUnit\Framework\TestCase;
 
-abstract class AbstractTextCase extends TestCase
+abstract class AbstractTestCase extends TestCase
 {
 
     protected function setUp(): void

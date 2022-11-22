@@ -5,9 +5,9 @@ namespace Test\Controller;
 use App\Controller\UsersApiController;
 use App\Repo\UserRepo;
 use App\Service\ServiceLocatorService;
-use Test\AbstractTextCase;
+use Test\AbstractTestCase;
 
-final class UsersApiControllerTest extends AbstractTextCase
+final class UsersApiControllerTest extends AbstractTestCase
 {
     public function testIndexBasicResponse()
     {

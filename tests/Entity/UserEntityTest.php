@@ -3,9 +3,9 @@
 namespace Test\Entity;
 
 use App\Entity\UserEntity;
-use Test\AbstractTextCase;
+use Test\AbstractTestCase;
 
-final class UserEntityTest extends AbstractTextCase
+final class UserEntityTest extends AbstractTestCase
 {
     private $props = ['id' => 1, 'username' => 'admin', 'password' => 'admin'];
 
