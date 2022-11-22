@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import Grid from '@mui/material/Grid';
 import Sidebar from '../Sidebar';
 import { BlogProps } from '../Blog';
-import { BlogPosts } from "../../Service/DataService";
+import { ApiErrors, BlogPosts } from "../../Service/DataService";
 import { HOMEPAGE_LAST_POSTS_COUNT } from "../../config";
 import { Button, Divider, Typography } from "@mui/material";
 import PostsComponent from "../Component/PostsComponent";
 import Link from '@mui/material/Link';
 import { useParams } from "react-router-dom";
 import Alert from '@mui/material/Alert';
+import ApiErrorsComponent from "../Component/ApiErrorsComponent";
 
 export default function Posts(props: BlogProps) {
   const queryParams: any = new URLSearchParams(window.location.search);
@@ -19,6 +20,7 @@ export default function Posts(props: BlogProps) {
 
   const [posts, setPosts] = useState<BlogPosts>([]);
   const [postsLoaded, setPostsLoaded] = useState(false);
+  const [errors, setErrors] = useState<ApiErrors>(undefined);
 
   let { page } = useParams<{ page: string }>();
   const currentPage = parseInt(page || '1');
@@ -26,7 +28,7 @@ export default function Posts(props: BlogProps) {
   useEffect(() => {
 
     (async () => {
-      const posts = await props.dataService.getPosts({
+      const result = await props.dataService.getPosts({
         list: {
           limit: HOMEPAGE_LAST_POSTS_COUNT,
           page: currentPage,
@@ -34,7 +36,8 @@ export default function Posts(props: BlogProps) {
         filter,
       });
       setPostsLoaded(true);
-      setPosts(posts);
+      setPosts(result.list);
+      setErrors(result.errors || undefined)
     })();
 
 
@@ -42,7 +45,7 @@ export default function Posts(props: BlogProps) {
 
   return (
     <>
-
+      <ApiErrorsComponent errors={errors} />
       <Grid container spacing={5} sx={{ mt: 3 }} style={{
         marginTop: 0,
       }}>

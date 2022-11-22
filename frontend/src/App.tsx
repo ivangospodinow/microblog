@@ -5,12 +5,12 @@ import Blog from './Blog/Blog';
 import DataService from './Service/DataService';
 import UserService from './Service/UserService';
 import LocalStorage from './Service/Storage/LocalStorage';
+import { API_URL } from './config';
 
 function App() {
 
-  // @TODO get url from .env
-  const dataService = new DataService('http://127.0.0.1:8888');
   const userService = new UserService(LocalStorage.getObject('user'));
+  const dataService = new DataService(API_URL, userService);
 
   return (
     <div>

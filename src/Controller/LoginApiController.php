@@ -26,6 +26,7 @@ class LoginApiController extends AbstractApiController
 
         $data = $user->getArrayCopy();
         unset($data['password']);
+        $data['token'] = $this->serviceLocator->get('authUser')->toSession($user);
 
         return [
             'success' => true,

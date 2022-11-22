@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Grid from '@mui/material/Grid';
 import Sidebar from '../Sidebar';
 import { BlogProps } from '../Blog';
-import { BlogPost } from "../../Service/DataService";
+import { ApiErrors, BlogPost } from "../../Service/DataService";
 import { useParams } from "react-router-dom";
 import Markdown from "../Markdown";
 import moment from 'moment';
@@ -10,27 +10,33 @@ import { Skeleton } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import Paper from '@mui/material/Paper';
 import Alert from '@mui/material/Alert';
+import ApiErrorsComponent from "../Component/ApiErrorsComponent";
+import { imagePath } from "../../Tools/Functions";
 
 export default function Post(props: BlogProps) {
 
   const [post, setPost] = useState<BlogPost>();
   const [postLoaded, setPostLoaded] = useState(false);
+  const [errors, setErrors] = useState<ApiErrors>(undefined);
+
   let { postId } = useParams<{ postId: string }>();
 
   useEffect(() => {
 
     (async () => {
       if (postId) {
-        const posts = await props.dataService.getPosts({
+        const result = await props.dataService.getPosts({
           filter: {
             postId,
           },
         });
         setPostLoaded(true);
-        setPost(posts ? posts[0] || undefined : undefined);
+        setPost(result.list ? result.list[0] || undefined : undefined);
+        setErrors(result.errors || undefined);
       } else {
         setPostLoaded(true);
         setPost(undefined);
+        setErrors(undefined);
       }
     })();
 
@@ -39,7 +45,7 @@ export default function Post(props: BlogProps) {
 
   return (
     <>
-
+      <ApiErrorsComponent errors={errors} />
       <Grid container spacing={5} sx={{ mt: 3 }} style={{
         marginTop: 0,
       }}>
@@ -76,23 +82,29 @@ export default function Post(props: BlogProps) {
                   backgroundSize: 'cover',
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: 'center',
-                  backgroundImage: `url(${post.image})`,
+                  backgroundImage: `url(${imagePath(post.image)})`,
                 }}
               >
                 {/* Increase the priority of the hero background image */}
-                {<img style={{ display: 'none' }} src={post.image} alt={post.image} />}
+                {<img style={{ display: 'none' }} src={imagePath(post.image)} alt={post.image} />}
                 <div style={{ height: '35vh' }}></div>
               </Paper>
 
               <h1>{post.title}</h1>
-              <Chip label={moment(post.createdAt).format('DD MMMM YYYY')} variant="outlined" />
-              &nbsp;
-              <Chip label={post.createdByUser.username} variant="outlined" />
-              <Markdown className="markdown" style={{
-                paddingBottom: 0,
-              }}>
-                {post.content}
-              </Markdown>
+
+              <div>
+                <Chip label={moment(post.createdAt).format('DD MMMM YYYY')} variant="outlined" />
+                &nbsp;
+                <Chip label={post.createdByUser.username} variant="outlined" />
+              </div>
+              <br />
+              <div>
+                <Markdown className="markdown" style={{
+                  paddingBottom: 0,
+                }}>
+                  {post.content}
+                </Markdown>
+              </div>
             </div>
           )
           }

@@ -44,7 +44,7 @@ final class PostRepoTest extends AbstractTextCase
 
         $this->pdo
             ->method('prepare')
-            ->with('INSERT INTO `posts` (`createdBy`,`title`,`content`,`image`,`createdAt`,`updatedAt`) VALUES (?,?,?,?,?,?);')
+            ->with('INSERT INTO `posts` (`createdBy`,`title`,`content`,`image`,`featured`,`createdAt`,`updatedAt`) VALUES (?,?,?,?,?,?,?);')
             ->willReturn($statementMock);
 
         $this->pdo
@@ -69,7 +69,7 @@ final class PostRepoTest extends AbstractTextCase
 
         $this->pdo
             ->method('prepare')
-            ->with('UPDATE `posts` SET `createdBy` = ?, `title` = ?, `content` = ?, `image` = ?, `createdAt` = ?, `updatedAt` = ? WHERE id = ?;')
+            ->with('UPDATE `posts` SET `createdBy` = ?, `title` = ?, `content` = ?, `image` = ?, `featured` = ?, `createdAt` = ?, `updatedAt` = ? WHERE id = ?;')
             ->willReturn($statementMock);
 
         $this->pdo

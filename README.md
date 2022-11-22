@@ -9,7 +9,7 @@
 [X] Login Controller
 [X] Post Controller
 [ ] Boostrap 4 view
-[ ] React implementation
+[X] React implementation
 [ ] Build and run scripts, instructions
 [ ] Recheck each point
 [ ] Reliase

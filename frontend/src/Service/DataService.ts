@@ -1,9 +1,11 @@
 import { clearEmptyObjects } from "../Tools/Functions";
+import UserService from "./UserService";
 
 export type BlogUser = {
     id: number,
     username: string,
     password?: string,
+    token?: string,
 };
 export type BlogUsers = BlogUser[] | undefined;
 
@@ -16,6 +18,7 @@ export type BlogPost = {
     image: string,
     updatedAt: string,
     createdByUser: BlogUser,
+    featured: string,
 };
 
 export type BlogPosts = BlogPost[] | undefined;
@@ -63,11 +66,29 @@ export type UserSave = {
     errors?: ApiError[],
 };
 
+export type UsersResult = {
+    list: BlogUsers,
+    errors?: ApiError[],
+};
+
+export type PostSave = {
+    id?: number,
+    errors?: ApiError[],
+};
+
+export type PostsResult = {
+    list: BlogPosts,
+    errors?: ApiError[],
+};
+
+
 
 export default class DataService {
     private uri;
-    constructor(uri: string) {
+    private userService;
+    constructor(uri: string, userService: UserService) {
         this.uri = uri;
+        this.userService = userService;
     }
 
     public fetch(url: string, params: any = undefined) {
@@ -78,22 +99,62 @@ export default class DataService {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         };
-
+        if (this.userService.isLogged()) {
+            params['headers']['Authorization'] = this.userService.getToken();
+        }
         return fetch(url, params);
     }
 
-    public getPosts(params: BlogPostsListParams): Promise<BlogPosts> {
+    public getPosts(params: BlogPostsListParams): Promise<PostsResult> {
         return new Promise((resolve: CallableFunction, reject: CallableFunction) => {
             this.fetch(this.uri + '/api/posts?json=' + encodeURIComponent(JSON.stringify(clearEmptyObjects(params))))
                 .then(res => res.json())
                 .then(
                     (result) => {
-                        resolve((result.list || []).map((post: BlogPost) => {
-                            if (post.image) {
-                                post.image = this.uri + post.image;
-                            }
-                            return post;
-                        }));
+                        resolve(result);
+                    },
+                    // Note: it's important to handle errors here
+                    // instead of a catch() block so that we don't swallow
+                    // exceptions from actual bugs in components.
+                    (error) => {
+                        console.error(error);
+                        resolve(undefined);
+                    }
+                )
+        });
+    }
+
+    public savePost(data: BlogPost): Promise<PostSave> {
+        return new Promise((resolve: CallableFunction, reject: CallableFunction) => {
+            this.fetch(this.uri + '/api/posts' + (undefined !== data.id ? '/' + data.id : ''), {
+                method: undefined === data.id ? 'POST' : 'PUT',
+                body: JSON.stringify(data)
+            })
+                .then(res => res.json())
+                .then(
+                    (result) => {
+                        resolve(result);
+                    },
+                    // Note: it's important to handle errors here
+                    // instead of a catch() block so that we don't swallow
+                    // exceptions from actual bugs in components.
+                    (error) => {
+                        console.error(error);
+                        resolve(undefined);
+                    }
+                )
+        });
+    }
+
+    public deletePost(id: number): Promise<PostSave> {
+        return new Promise((resolve: CallableFunction, reject: CallableFunction) => {
+            this.fetch(this.uri + '/api/posts/' + id, {
+                method: 'DELETE',
+            })
+                .then(res => res.json())
+                .then(
+                    (result) => {
+                        resolve(result);
                     },
                     // Note: it's important to handle errors here
                     // instead of a catch() block so that we don't swallow
@@ -151,13 +212,13 @@ export default class DataService {
         });
     }
 
-    public getUsers(params: BlogUsersListParams): Promise<BlogUsers> {
+    public getUsers(params: BlogUsersListParams): Promise<UsersResult> {
         return new Promise((resolve: CallableFunction, reject: CallableFunction) => {
             this.fetch(this.uri + '/api/users?json=' + encodeURIComponent(JSON.stringify(clearEmptyObjects(params))))
                 .then(res => res.json())
                 .then(
                     (result) => {
-                        resolve(result.list || []);
+                        resolve(result);
                     },
                     // Note: it's important to handle errors here
                     // instead of a catch() block so that we don't swallow

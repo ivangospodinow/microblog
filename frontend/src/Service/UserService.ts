@@ -3,6 +3,7 @@ import LocalStorage from "./Storage/LocalStorage";
 export type UserData = {
     id: number,
     username: string,
+    token: string,
 };
 
 export default class UserService {
@@ -23,9 +24,15 @@ export default class UserService {
     }
 
     public isLogged(): boolean {
-        return this.data && undefined !== this.data.id ? true : false;
+        return this.data && undefined !== this.data.token ? true : false;
     }
 
+    public getToken() {
+        if (this.data && this.data.token) {
+            return this.data.token;
+        }
+        throw new Error('User token is not set');
+    }
 
     public getId(): number {
         if (this.data && this.data.id) {

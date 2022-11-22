@@ -4,6 +4,7 @@ namespace Test\Controller;
 
 use App\Controller\LoginApiController;
 use App\Repo\UserRepo;
+use App\Service\AuthUser;
 use App\Service\ServiceLocatorService;
 use Test\AbstractTextCase;
 
@@ -15,6 +16,7 @@ final class LoginApiControllerTest extends AbstractTextCase
 
         $sm = new ServiceLocatorService((object) [
             'userRepo' => $userRepoMock,
+            'authUser' => new AuthUser($this->getUserEntityMock()),
         ]);
 
         $controller = new LoginApiController($sm);
@@ -42,6 +44,7 @@ final class LoginApiControllerTest extends AbstractTextCase
 
         $sm = new ServiceLocatorService((object) [
             'userRepo' => $userRepoMock,
+            'authUser' => new AuthUser($this->getUserEntityMock()),
         ]);
 
         $controller = new LoginApiController($sm);
@@ -62,6 +65,7 @@ final class LoginApiControllerTest extends AbstractTextCase
 
         $sm = new ServiceLocatorService((object) [
             'userRepo' => $userRepoMock,
+            'authUser' => new AuthUser($this->getUserEntityMock()),
         ]);
 
         $controller = new LoginApiController($sm);
@@ -80,8 +84,12 @@ final class LoginApiControllerTest extends AbstractTextCase
         $userRepoMock = $this->createMock(UserRepo::class);
         $userRepoMock->method('getByUserName')->with($user->username)->willReturn($user);
 
+        $authUserMock = $this->createMock(AuthUser::class);
+        $authUserMock->method('toSession')->with($user)->willReturn('token');
+
         $sm = new ServiceLocatorService((object) [
             'userRepo' => $userRepoMock,
+            'authUser' => $authUserMock,
         ]);
 
         $controller = new LoginApiController($sm);
@@ -91,6 +99,7 @@ final class LoginApiControllerTest extends AbstractTextCase
 
         $data = $user->getArrayCopy();
         unset($data['password']);
+        $data['token'] = 'token';
         $this->assertSame($data, $result['user']);
     }
 }

@@ -26,6 +26,15 @@ class PostsApiController extends AbstractApiController
             return $errors;
         }
 
+        if (!empty($params['image'])) {
+            $imageService = $this->serviceLocator->get('imageStoreService');
+            $newImagePath = $imageService->storeFromBase64String($params['image']);
+            if ($newImagePath) {
+                $params['image'] = $newImagePath;
+            }
+        }
+
+        $params['createdBy'] = $this->serviceLocator->get('authUser')->getLoggedUserId();
         $repo = $this->serviceLocator->get('postRepo');
         $post = new PostEntity($params);
         $repo->save($post);
@@ -62,6 +71,19 @@ class PostsApiController extends AbstractApiController
                     ],
                 ],
             ];
+        }
+
+        if (!empty($params['image'])) {
+            $imageService = $this->serviceLocator->get('imageStoreService');
+            $newImagePath = $imageService->storeFromBase64String($params['image']);
+            if ($newImagePath) {
+                $params['image'] = $newImagePath;
+
+                // delete old image
+                if ($post->image) {
+                    $imageService->removeImage($post->image);
+                }
+            }
         }
 
         $post->exchangeArray($params);

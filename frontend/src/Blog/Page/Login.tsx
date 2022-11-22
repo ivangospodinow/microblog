@@ -28,8 +28,12 @@ export default function Login(props: BlogProps) {
     setLoginResult(result);
     setLoading(false);
 
-    if (undefined !== result['user']) {
-      props.userService.login(result['user']);
+    if (undefined !== result['user'] && undefined !== result['user'].token) {
+      props.userService.login({
+        id: result['user'].id,
+        username: result['user'].username,
+        token: result['user'].token,
+      });
       window.location.href = '/';
     }
 

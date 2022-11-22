@@ -1,12 +1,6 @@
 {
     "type": "object",
     "properties": {
-        "createdBy": {
-            "type": "integer",
-            "required": true,
-            "minimum": 0,
-            "description": "User id"
-        },
         "title": {
             "type": "string",
             "required": true,
@@ -23,9 +17,11 @@
         "image": {
             "type": "string",
             "optional": true,
-            "minLength": 0,
-            "maxLength": 255,
-            "description": "Post image"
+            "maxLength": 8000000,
+            "media": {
+                "binaryEncoding": "base64",
+                "type": "image/*"
+            }
         }
     }
 }

@@ -3,27 +3,30 @@ import Grid from '@mui/material/Grid';
 import Main from '../Main';
 import Sidebar from '../Sidebar';
 import { BlogProps } from '../Blog';
-import { BlogPosts } from "../../Service/DataService";
+import { ApiErrors, BlogPosts } from "../../Service/DataService";
 import { HOMEPAGE_LAST_POSTS_COUNT } from "../../config";
 import FeaturedPostsComponent from "../Component/FeaturedPostsComponent";
+import ApiErrorsComponent from "../Component/ApiErrorsComponent";
 
 
 export default function Home(props: BlogProps) {
 
   const [posts, setPosts] = useState<BlogPosts>([]);
   const [postsLoaded, setPostsLoaded] = useState(false);
+  const [errors, setErrors] = useState<ApiErrors>(undefined);
 
   useEffect(() => {
 
     (async () => {
-      const posts = await props.dataService.getPosts({
+      const result = await props.dataService.getPosts({
         list: {
           limit: HOMEPAGE_LAST_POSTS_COUNT,
           page: 1,
         }
       });
       setPostsLoaded(true);
-      setPosts(posts);
+      setPosts(result.list);
+      setErrors(result.errors || undefined);
     })();
 
 
@@ -36,7 +39,7 @@ export default function Home(props: BlogProps) {
   useEffect(() => {
 
     (async () => {
-      const posts = await props.dataService.getPosts({
+      const result = await props.dataService.getPosts({
         list: {
           limit: 3,
         },
@@ -45,7 +48,8 @@ export default function Home(props: BlogProps) {
         },
       });
       setFeaturedPostsLoaded(true);
-      setFeaturedPosts(posts);
+      setFeaturedPosts(result.list);
+      setErrors(result.errors || undefined);
     })();
 
 
@@ -54,6 +58,8 @@ export default function Home(props: BlogProps) {
 
   return (
     <>
+      <ApiErrorsComponent errors={errors} />
+
       <FeaturedPostsComponent featuredPosts={featuredPosts} featuredPostsLoaded={featuredPostsLoaded} />
       <Grid container spacing={5} sx={{ mt: 3 }}>
         <Main title="Latest from the microblog" posts={posts} postsLoaded={postsLoaded} />

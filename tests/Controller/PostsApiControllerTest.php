@@ -5,6 +5,7 @@ namespace Test\Controller;
 use App\Controller\PostsApiController;
 use App\Repo\PostRepo;
 use App\Repo\UserRepo;
+use App\Service\AuthUser;
 use App\Service\ServiceLocatorService;
 use Test\AbstractTextCase;
 
@@ -40,20 +41,17 @@ final class PostsApiControllerTest extends AbstractTextCase
 
         $result = $controller->create([]);
         $this->assertFalse($result['success']);
-        $this->assertSame('createdBy', $result['errors'][0]['property']);
-        $this->assertSame('title', $result['errors'][1]['property']);
-        $this->assertSame('content', $result['errors'][2]['property']);
+        $this->assertSame('title', $result['errors'][0]['property']);
+        $this->assertSame('content', $result['errors'][1]['property']);
 
         $result = $controller->create(['createdBy' => null, 'title' => null, 'content' => null]);
         $this->assertFalse($result['success']);
-        $this->assertSame('createdBy', $result['errors'][0]['property']);
-        $this->assertSame('title', $result['errors'][1]['property']);
-        $this->assertSame('content', $result['errors'][2]['property']);
+        $this->assertSame('title', $result['errors'][0]['property']);
+        $this->assertSame('content', $result['errors'][1]['property']);
 
         $result = $controller->create(['createdBy' => '', 'title' => '', 'content' => '']);
         $this->assertFalse($result['success']);
-        $this->assertSame('createdBy', $result['errors'][0]['property']);
-        $this->assertSame('title', $result['errors'][1]['property']);
+        $this->assertSame('title', $result['errors'][0]['property']);
 
     }
 
@@ -64,6 +62,7 @@ final class PostsApiControllerTest extends AbstractTextCase
 
         $sm = new ServiceLocatorService((object) [
             'postRepo' => $postRepoMock,
+            'authUser' => new AuthUser($this->getUserEntityMock()),
         ]);
 
         $controller = new PostsApiController($sm);

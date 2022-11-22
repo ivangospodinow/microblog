@@ -5,7 +5,7 @@ import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import { BlogPost } from '../Service/DataService';
-import { splitStringToLines, stringsArrayToString } from '../Tools/Functions';
+import { imagePath, splitStringToLines, stringsArrayToString } from '../Tools/Functions';
 import moment from 'moment';
 
 type FeaturedPostProps = {
@@ -20,7 +20,10 @@ export default function FeaturedPost(props: FeaturedPostProps) {
       <CardActionArea component="a" href={'/post/' + post.id}>
         <Card sx={{ display: 'flex' }}>
           <CardContent sx={{ flex: 1 }}>
-            <Typography component="h2" variant="h5">
+            <Typography component="h2" variant="h5" style={{
+              height: '3em',
+              overflow: 'hidden',
+            }}>
               {post.title}
             </Typography>
             <Typography variant="subtitle1" color="text.secondary">
@@ -41,7 +44,7 @@ export default function FeaturedPost(props: FeaturedPostProps) {
           <CardMedia
             component="img"
             sx={{ width: 160, display: { xs: 'none', sm: 'block' } }}
-            image={post.image}
+            image={imagePath(post.image)}
             alt={post.title}
           />
         </Card>

@@ -11,7 +11,6 @@ $serviceLocator = new ServiceLocatorService($container);
 $container->serviceLocator = $serviceLocator;
 
 // CORS
-
 $app->options('/{routes:.+}', function ($request, $response, $args) {
     return $response;
 });
@@ -21,7 +20,8 @@ $app->add(function ($req, $res, $next) {
     return $response
         ->withHeader('Access-Control-Allow-Origin', '*')
         ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
+        ->withHeader('Cache-Control', 'public, max_age=3600');
 });
 
 $app->get('/', function (Request $request, Response $response, array $args) {
@@ -32,6 +32,20 @@ $app->get('/', function (Request $request, Response $response, array $args) {
 foreach ($config['routes'] as $route) {
     $method = $route['type'];
     $app->$method($route['uri'], function (Request $request, Response $response, array $args) use ($route) {
+
+        // cut access if user is not logged
+        if (!$route['public'] && !$this->serviceLocator->get('authUser')->isLogged()) {
+            return $response->withJson([
+                'success' => false,
+                'errors' => [
+                    [
+                        'property' => 'user',
+                        'message' => 'Authrorization failed',
+                    ],
+                ],
+            ], 401);
+        }
+
         // @TODO remove
         // introduce a random delay, to help development
         // sleep(rand(0, 3));

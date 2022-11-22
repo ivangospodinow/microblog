@@ -16,7 +16,9 @@ import Posts from './Page/Posts';
 import Post from './Page/Post';
 import Login from './Page/Login';
 import UserService from '../Service/UserService';
-import Users from './Page/Admin/Users';
+import Users from './Page/AdminUsers';
+import AdminPosts from './Page/AdminPosts';
+import AdminUsers from './Page/AdminUsers';
 
 
 const theme = createTheme();
@@ -28,7 +30,7 @@ export type BlogProps = {
 
 export default function Blog(props: BlogProps) {
 
-  const router = createBrowserRouter([
+  const routes = [
     {
       path: "/",
       element: <Home {...props} />,
@@ -45,11 +47,22 @@ export default function Blog(props: BlogProps) {
       path: "/login",
       element: <Login {...props} />,
     },
-    {
-      path: "/admin/users",
-      element: <Users {...props} />,
-    },
-  ]);
+  ];
+
+  if (props.userService.isLogged()) {
+    routes.push(...[
+      {
+        path: "/admin/users",
+        element: <AdminUsers {...props} />,
+      },
+      {
+        path: "/admin/posts",
+        element: <AdminPosts {...props} />,
+      },
+    ]);
+  }
+
+  const router = createBrowserRouter(routes);
 
 
   return (

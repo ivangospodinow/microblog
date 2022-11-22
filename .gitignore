@@ -3,3 +3,4 @@ composer.lock
 .env
 node_modules
 frontend/node_modules
+public/img/blog-*

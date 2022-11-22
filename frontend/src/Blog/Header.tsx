@@ -39,12 +39,7 @@ export default function Header(props: BlogProps) {
           }}
           style={{
             cursor: 'pointer',
-          }}
-        >
-          <HomeIcon style={{
-            fontSize: '1.2em',
-            verticalAlign: 'sub',
-          }} />
+          }}>
           Microblog
         </Typography>
 
@@ -52,6 +47,13 @@ export default function Header(props: BlogProps) {
           <SearchIcon />
         </IconButton>
 
+
+        <IconButton onClick={() => {
+          window.location.href = '/';
+        }}>
+          <HomeIcon fontSize="inherit" />
+        </IconButton>
+        &nbsp;
         <AuthButtonsComponent {...props} />
 
       </Toolbar>

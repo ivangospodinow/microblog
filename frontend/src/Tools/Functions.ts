@@ -1,3 +1,5 @@
+import { API_URL } from "../config";
+
 export function splitStringToLines(str: string): string[] {
     return str.split(/\r?\n/);
 }
@@ -20,4 +22,29 @@ export function clearEmptyObjects(o: any) {
         }
     }
     return o;
+}
+
+export function convertFileToBase64(file: File): Promise<string> {
+    return new Promise((resolve: CallableFunction, reject: CallableFunction) => {
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+            resolve(reader.result);
+        };
+        reader.onerror = function (error) {
+            reject('Error: ', error);
+        };
+    });
+}
+
+export function imagePath(src: string): string {
+    if (!src) {
+        src = '/img/placeholder.jpg';
+    }
+
+    if (src.substr(0, 10) === 'data:image') {
+        return src;
+    }
+
+    return API_URL + src;
 }

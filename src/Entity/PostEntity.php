@@ -10,6 +10,7 @@ class PostEntity extends AbstractEntity
     public $title;
     public $content;
     public $image;
+    public $featured;
     public $createdAt;
     public $updatedAt;
 }
