@@ -17,8 +17,8 @@ composer run-script appinit
 composer run-script localhost-backend
 # runs frontend from build, no npm install required
 composer run-script localhost-frontend-build
-# open http://localhost:3000/
-```
+# open http://127.0.0.1:8889
+````
 
 # Testing
 ```sh
@@ -38,7 +38,7 @@ composer run-script tests
 - [ ] Boostrap 4 view
 - [X] React implementation
 - [X] Build and run scripts, instructions
-- [ ] Recheck each point
+- [X] Recheck each point
 - [ ] Reliase
 
 # Microblog Task

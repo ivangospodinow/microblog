@@ -81,7 +81,7 @@ SQL;
             FROM :table AS t
             WHERE 1
             GROUP BY `month`
-            ORDER BY t.createdAt DESC
+            ORDER BY `month` DESC
 SQL;
 
         return $this->executeQueryWithResult($sql);
